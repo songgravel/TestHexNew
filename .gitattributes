@@ -1,0 +1,7 @@
+* text=auto
+# keep lf on unity files
+*.meta text eol=lf
+*.prefab text eol=lf
+*.unity text eol=lf
+*.cs text eol=lf
+*.mat text eol=lf
