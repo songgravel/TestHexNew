@@ -13,6 +13,16 @@ namespace CobraGame
         {
             return (int)direction < 3 ? (direction + 3) : (direction - 3);
         }
+
+        public static HexDirection Previous(this HexDirection direction)
+        {
+            return direction == HexDirection.NE ? HexDirection.NW : (direction - 1);
+        }
+
+        public static HexDirection Next(this HexDirection direction)
+        {
+            return direction == HexDirection.NW ? HexDirection.NE : (direction + 1);
+        }
     }
 
     public static class HexMetrics
@@ -23,9 +33,11 @@ namespace CobraGame
 
         public const float innerRadius = outerRadius * SQRT32;
 
-        public const float solidFactor = 0.95f;
+        public const float solidFactor = 0.9f;
 
         public const float blendFactor = 1f - solidFactor;
+
+        public const float elevationStep = 1f;
 
         static Vector3[] corners = {
             new Vector3(0f, 0f, outerRadius),
@@ -55,6 +67,12 @@ namespace CobraGame
         public static Vector3 GetSecondSolidCorner(HexDirection direction)
         {
             return corners[(int)direction + 1] * solidFactor;
+        }
+
+        public static Vector3 GetBridge(HexDirection direction)
+        {
+            return (corners[(int)direction] + corners[(int)direction + 1]) *
+                blendFactor;
         }
     }
 }

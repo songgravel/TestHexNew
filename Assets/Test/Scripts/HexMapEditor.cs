@@ -12,6 +12,7 @@ namespace CobraGame
         public HexGrid hexGrid;
 
         private Color activeColor;
+        float activeElevation;
 
         void Awake()
         {
@@ -36,13 +37,30 @@ namespace CobraGame
             RaycastHit hit;
             if (Physics.Raycast(inputRay, out hit))
             {
-                hexGrid.ColorCell(hit.point, activeColor);
+                EditCell(hexGrid.GetCell(hit.point));
             }
+        }
+
+        void EditCell(HexCell cell)
+        {
+            cell.color = activeColor;
+            cell.Elevation = activeElevation;
+            hexGrid.Refresh();
         }
 
         public void SelectColor(int index)
         {
             activeColor = colors[index];
+        }
+
+        public void SetElevation(float elevation)
+        {
+            activeElevation = elevation;
+        }
+
+        public void ClearSelected()
+        {
+            //gs todo
         }
     }
 }
