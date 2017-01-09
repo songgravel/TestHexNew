@@ -9,18 +9,19 @@ namespace CobraGame
         MeshCollider meshCollider;
 
         Mesh hexMesh;
-        List<Vector3> vertices;
-        List<Color> colors;
-        List<int> triangles;
+
+        static List<Vector3> vertices = new List<Vector3>();
+        static List<Color> colors = new List<Color>();
+        static List<int> triangles = new List<int>();
 
         void Awake()
         {
             GetComponent<MeshFilter>().mesh = hexMesh = new Mesh();
             meshCollider = gameObject.AddComponent<MeshCollider>();
             hexMesh.name = "Hex Mesh";
-            vertices = new List<Vector3>();
-            colors = new List<Color>();
-            triangles = new List<int>();
+            //vertices = new List<Vector3>();
+            //colors = new List<Color>();
+            //triangles = new List<int>();
         }
 
         public void Triangulate(HexCell[] cells)
@@ -56,7 +57,7 @@ namespace CobraGame
             Vector3 v2 = center + HexMetrics.GetSecondSolidCorner(direction);
 
             AddTriangle(center, v1, v2);
-            AddTriangleColor(cell.color);
+            AddTriangleColor(cell.Color);
 
             if (direction <= HexDirection.SE)
             {
@@ -78,7 +79,7 @@ namespace CobraGame
             v3.y = v4.y = neighbor.Elevation * HexMetrics.elevationStep;
 
             AddQuad(v1, v2, v3, v4);
-            AddQuadColor(cell.color, neighbor.color);
+            AddQuadColor(cell.Color, neighbor.Color);
 
             HexCell nextNeighbor = cell.GetNeighbor(direction.Next());
             if (direction <= HexDirection.E && nextNeighbor != null)
@@ -86,7 +87,7 @@ namespace CobraGame
                 Vector3 v5 = v2 + HexMetrics.GetBridge(direction.Next());
                 v5.y = nextNeighbor.Elevation * HexMetrics.elevationStep;
                 AddTriangle(v2, v4, v5);
-                AddTriangleColor(cell.color, neighbor.color, nextNeighbor.color);
+                AddTriangleColor(cell.Color, neighbor.Color, nextNeighbor.Color);
             }
         }
 

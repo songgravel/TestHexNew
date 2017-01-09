@@ -39,6 +39,8 @@ namespace CobraGame
 
         public const float elevationStep = 1f;
 
+        public const int chunkSizeX = 5, chunkSizeZ = 5;
+
         static Vector3[] corners = {
             new Vector3(0f, 0f, outerRadius),
             new Vector3(innerRadius, 0f, 0.5f * outerRadius),
