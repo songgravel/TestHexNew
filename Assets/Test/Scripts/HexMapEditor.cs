@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace CobraGame
 {
@@ -11,12 +12,17 @@ namespace CobraGame
 
         public HexGrid hexGrid;
 
+        public Text textHeight;
+
         private Color activeColor;
         float activeElevation;
         int brushSize;
 
         bool applyColor;
-        bool applyElevation = true;
+        bool applyElevation = false;
+        bool applySelect = true;
+
+        Dictionary<int, HexCell> selectedList = new Dictionary<int, HexCell>();
 
         void Awake()
         {
@@ -41,7 +47,8 @@ namespace CobraGame
             RaycastHit hit;
             if (Physics.Raycast(inputRay, out hit))
             {
-                EditCells(hexGrid.GetCell(hit.point));
+                //EditCells(hexGrid.GetCell(hit.point));
+                SelectCells(hexGrid.GetCell(hit.point));
             }
         }
 
@@ -81,6 +88,59 @@ namespace CobraGame
             }
         }
 
+        void SelectCells(HexCell center)
+        {
+            int centerX = center.coordinates.X;
+            int centerZ = center.coordinates.Z;
+
+            for (int r = 0, z = centerZ - brushSize; z <= centerZ; z++, r++)
+            {
+                for (int x = centerX - r; x <= centerX + brushSize; x++)
+                {
+                    SelectCell(hexGrid.GetCell(new HexCoordinates(x, z)));
+                }
+            }
+            for (int r = 0, z = centerZ + brushSize; z > centerZ; z--, r++)
+            {
+                for (int x = centerX - brushSize; x <= centerX + r; x++)
+                {
+                    SelectCell(hexGrid.GetCell(new HexCoordinates(x, z)));
+                }
+            }
+        }
+
+        void SelectCell(HexCell cell)
+        {
+            if (cell)
+            {
+                if (applySelect)
+                {
+                    cell.Selected = true;
+                    if (!selectedList.ContainsKey(cell.index))
+                    {
+                        selectedList.Add(cell.index, cell);
+                    }
+                }
+                else
+                {
+                    cell.Selected = false;
+                    if (selectedList.ContainsKey(cell.index))
+                    {
+                        selectedList.Remove(cell.index);
+                    }
+                }
+            }
+        }
+
+        public void ClearSelected()
+        {
+            foreach(KeyValuePair<int, HexCell> kvp in selectedList)
+            {
+                kvp.Value.Selected = false;
+            }
+            selectedList.Clear();
+        }
+
         public void SelectColor(int index)
         {
             applyColor = index >= 0;
@@ -98,6 +158,17 @@ namespace CobraGame
         public void SetElevation(float elevation)
         {
             activeElevation = elevation;
+            if (textHeight)
+            {
+                textHeight.text = elevation.ToString();
+            }
+            if (applyElevation)
+            {
+                foreach (KeyValuePair<int, HexCell> kvp in selectedList)
+                {
+                    kvp.Value.Elevation = activeElevation;
+                }
+            }
         }
 
         public void ShowUI(bool visible)
@@ -108,6 +179,11 @@ namespace CobraGame
         public void SetBrushSize(float size)
         {
             brushSize = (int)size;
+        }
+
+        public void SetApplySelect(bool toggle)
+        {
+            applySelect = toggle;
         }
     }
 }

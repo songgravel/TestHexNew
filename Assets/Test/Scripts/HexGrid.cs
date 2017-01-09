@@ -81,6 +81,7 @@ namespace CobraGame
             cell.transform.localPosition = position;
             cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
             cell.Color = defaultColor;
+            cell.index = i;
 
             if (x > 0)
             {

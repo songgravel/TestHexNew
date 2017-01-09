@@ -6,9 +6,11 @@ namespace CobraGame
 {
     public class HexCell : MonoBehaviour
     {
+        public int index;
         public HexCoordinates coordinates;
-        Color color;
+        Color color, originColor;
         float elevation = float.MinValue;
+        bool selected;
         public RectTransform uiRect;
         public HexGridChunk chunk;
 
@@ -66,6 +68,30 @@ namespace CobraGame
                 uiRect.localPosition = uiPosition;
 
                 Refresh();
+            }
+        }
+
+        public bool Selected
+        {
+            get
+            {
+                return selected;
+            }
+            set
+            {
+                if (selected != value)
+                {
+                    if (selected)
+                    {
+                        Color = originColor;
+                    }
+                    else
+                    {
+                        originColor = Color;
+                        Color = Color.green;
+                    }
+                }
+                selected = value;
             }
         }
 
