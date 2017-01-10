@@ -328,6 +328,10 @@ namespace CobraGame
 
         public void LoadFile()
         {
+            if (fileName == null || fileName == "")
+            {
+                fileName = "map001";
+            }
             if (EditorUtility.DisplayDialog("提示", "是否确认重新加载地图 " + fileName + "？未保存数据将会丢失！", "确认", "取消"))
             {
                 Hex2Xml.Load(fileName, hexGrid);
@@ -336,6 +340,10 @@ namespace CobraGame
 
         public void SaveFile()
         {
+            if (fileName == null || fileName == "")
+            {
+                fileName = "map001";
+            }
             if (EditorUtility.DisplayDialog("提示", "是否确认保存覆盖地图 " + fileName + "？", "确认", "取消"))
             {
                 Hex2Xml.Save(fileName, hexGrid);

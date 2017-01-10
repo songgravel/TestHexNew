@@ -13,73 +13,134 @@ using System.Xml;
 
 namespace CobraGame
 {
+    public struct XmlCellInfo
+    {
+        public int index;
+        public int mapData;
+        public int mapPlat;
+        public float elevation;
+    }
+
     public class Hex2Xml
     {
+        public static Dictionary<int, XmlCellInfo> dicCellList = new Dictionary<int, XmlCellInfo>();
+
         public static bool Save(string strFileName, HexGrid hexGrid)
         {
-            Debug.Log("Save ok:" + strFileName);
-            return true;
-            /*
-            Debug.Log("Excel2Xml:" + strExcelName);
-            FileStream stream = File.Open(DDefine.GetDataPath() + @"/Editor/Excel2Xml/Inputs/" + strExcelName + ".xlsx", FileMode.Open, FileAccess.Read);
-            IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-
-            DataSet result = excelReader.AsDataSet();
-
-            for (int t = 0; t < result.Tables.Count; t++)
+            if (strFileName.IndexOf(".xml") < 0)
             {
-                string strTableName = result.Tables[t].TableName;
-                Debug.Log("Table:" + strTableName);
-                int columns = result.Tables[t].Columns.Count;
-                int rows = result.Tables[t].Rows.Count;
-                string[] title = new string[columns];
-                for (int j = 0; j < columns; j++)
-                {
-                    string nvalue = result.Tables[t].Rows[2][j].ToString();
-                    title[j] = nvalue;
-                }
+                strFileName += ".xml";
+            }
 
-                string filepath = DDefine.GetDataPath() + @"/TowerDefense/Resources/Configs/" + strTableName + ".xml";
-                XmlDocument xmlDoc = new XmlDocument();
-                XmlNode root = null;
-                if (File.Exists(filepath))
-                {
-                    xmlDoc.Load(filepath);
-                    root = xmlDoc.SelectSingleNode("DataList");
+            string filepath = DDefine.GetDataPath() + @"/TowerDefense/Resources/Configs/Maps/" + strFileName;
+            Debug.Log("Save:" + filepath);
+            XmlDocument xmlDoc = new XmlDocument();
+            XmlNode root = null;
+            if (File.Exists(filepath))
+            {
+                xmlDoc.Load(filepath);
+                root = xmlDoc.SelectSingleNode("DataList");
+                
+                root.RemoveAll();
 
-                    root.RemoveAll();
+                Debug.Log("updateXml OK!");
+            }
+            else
+            {
+                root = xmlDoc.CreateElement("DataList");
+                
+                xmlDoc.AppendChild(root);
+                Debug.Log("createXml OK!");
+            }
+            //地图单元格信息
+            if (root != null)
+            {
+                XmlElement elmNew = xmlDoc.CreateElement("MapInfo");
+                elmNew.SetAttribute("radius", HexMetrics.outerRadius.ToString());
+                elmNew.SetAttribute("chunk_size_x", HexMetrics.chunkSizeX.ToString());
+                elmNew.SetAttribute("chunk_size_z", HexMetrics.chunkSizeZ.ToString());
+                elmNew.SetAttribute("chunk_count_x", hexGrid.chunkCountX.ToString());
+                elmNew.SetAttribute("chunk_count_z", hexGrid.chunkCountZ.ToString());
+                root.AppendChild(elmNew);
 
-                    Debug.Log("updateXml OK!");
-                }
-                else
+                foreach (HexCell cell in hexGrid.GetCells())
                 {
-                    root = xmlDoc.CreateElement("DataList");
-
-                    xmlDoc.AppendChild(root);
-                    Debug.Log("createXml OK!");
-                }
-                if (root != null)
-                {
-                    for (int i = 3; i < rows; i++)
+                    if (cell && 
+                        (cell.MapData > 0 || 
+                        cell.MapPlat > 0 || 
+                        cell.Elevation > 0)
+                        )
                     {
-                        XmlElement elmNew = xmlDoc.CreateElement("DataInfo");
-                        for (int j = 0; j < columns; j++)
-                        {
-                            string nvalue = result.Tables[t].Rows[i][j].ToString();
-                            Debug.Log(nvalue);
-                            elmNew.SetAttribute(title[j], nvalue);
-                        }
+                        elmNew = xmlDoc.CreateElement("CellInfo");
+                        elmNew.SetAttribute("index", cell.index.ToString());
+                        elmNew.SetAttribute("map_data", cell.MapData.ToString());
+                        elmNew.SetAttribute("map_plat", cell.MapPlat.ToString());
+                        elmNew.SetAttribute("elevation", cell.Elevation.ToString());
                         root.AppendChild(elmNew);
                     }
                 }
-                xmlDoc.Save(filepath);
             }
-            */
+
+            xmlDoc.Save(filepath);
+
+            return true;
         }
 
         public static bool Load(string strFileName, HexGrid hexGrid)
         {
-            Debug.Log("Load ok:" + strFileName);
+            if (strFileName.IndexOf(".xml") >= 0)
+            {
+                strFileName = strFileName.Substring(0, strFileName.Length - 4);//Resources加载不能带后缀名
+            }
+
+            //string filepath = DDefine.GetDataPath() + @"/TowerDefense/Resources/Configs/Maps/" + strFileName;
+            string filepath = string.Format(@"Configs/Maps/{0}", strFileName);
+            Debug.Log("Load:" + filepath);
+            XmlDocument xdoc = new XmlDocument();
+            TextAsset textAsset = DDefine.LoadRes(filepath) as TextAsset;
+            if (textAsset)
+            {
+                xdoc.LoadXml(textAsset.text); //从表格的存放路径来获取
+
+                XmlNodeList list = xdoc.SelectNodes(@"DataList/MapInfo");
+                foreach (XmlNode node in list)
+                {
+                    HexMetrics.outerRadius = float.Parse(node.Attributes["radius"].Value);
+                    HexMetrics.chunkSizeX = int.Parse(node.Attributes["chunk_size_x"].Value);
+                    HexMetrics.chunkSizeZ = int.Parse(node.Attributes["chunk_size_z"].Value);
+                    hexGrid.chunkCountX = int.Parse(node.Attributes["chunk_count_x"].Value);
+                    hexGrid.chunkCountZ = int.Parse(node.Attributes["chunk_count_z"].Value);
+                    hexGrid.outerRadius = HexMetrics.outerRadius;
+                    hexGrid.chunkSizeX = HexMetrics.chunkSizeX;
+                    hexGrid.chunkSizeZ = HexMetrics.chunkSizeZ;
+                }
+
+                dicCellList.Clear();
+                list = xdoc.SelectNodes(@"DataList/CellInfo");
+                foreach (XmlNode node in list)
+                {
+                    XmlCellInfo cell = new XmlCellInfo();
+                    cell.index = int.Parse(node.Attributes["index"].Value);
+                    cell.mapData = int.Parse(node.Attributes["map_data"].Value);
+                    cell.mapPlat = int.Parse(node.Attributes["map_plat"].Value);
+                    cell.elevation = float.Parse(node.Attributes["elevation"].Value);
+
+                    dicCellList.Add(cell.index, cell);
+                }
+
+                Debug.Log("loadMap OK!");
+            }
+            else
+            {
+                HexMetrics.outerRadius = hexGrid.outerRadius;
+                HexMetrics.chunkSizeX = hexGrid.chunkSizeX;
+                HexMetrics.chunkSizeZ = hexGrid.chunkSizeZ;
+
+                Debug.Log("createMap OK!");
+            }
+
+            hexGrid.LoadData();
+
             return true;
         }
     }

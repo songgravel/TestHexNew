@@ -1,0 +1,16 @@
+<DataList>
+  <MapInfo radius="10" chunk_size_x="5" chunk_size_z="5" chunk_count_x="4" chunk_count_z="3" />
+  <CellInfo index="86" map_data="16" map_plat="1" elevation="13" />
+  <CellInfo index="87" map_data="16" map_plat="1" elevation="13" />
+  <CellInfo index="105" map_data="16" map_plat="1" elevation="13" />
+  <CellInfo index="106" map_data="16" map_plat="1" elevation="13" />
+  <CellInfo index="107" map_data="16" map_plat="1" elevation="13" />
+  <CellInfo index="110" map_data="2" map_plat="3" elevation="34" />
+  <CellInfo index="130" map_data="2" map_plat="3" elevation="34" />
+  <CellInfo index="131" map_data="2" map_plat="3" elevation="34" />
+  <CellInfo index="150" map_data="2" map_plat="3" elevation="34" />
+  <CellInfo index="155" map_data="24" map_plat="2" elevation="26" />
+  <CellInfo index="175" map_data="24" map_plat="2" elevation="26" />
+  <CellInfo index="194" map_data="24" map_plat="2" elevation="26" />
+  <CellInfo index="214" map_data="24" map_plat="2" elevation="26" />
+</DataList>

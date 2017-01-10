@@ -9,6 +9,8 @@ namespace CobraGame
     public class HexGrid : MonoBehaviour
     {
         int cellCountX, cellCountZ;
+        public float outerRadius = 10f;
+        public int chunkSizeX = 5, chunkSizeZ = 5;
         public int chunkCountX = 4, chunkCountZ = 3;
 
         public Color defaultColor = Color.black;
@@ -24,10 +26,10 @@ namespace CobraGame
 
         void Awake()
         {
-            LoadData();
+            //LoadData();
         }
 
-        void LoadData()
+        public void LoadData()
         {
             cellCountX = chunkCountX * HexMetrics.chunkSizeX;
             cellCountZ = chunkCountZ * HexMetrics.chunkSizeZ;
@@ -75,6 +77,15 @@ namespace CobraGame
             cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
             cell.Color = defaultColor;
             cell.index = i;
+            float elevation = 0;
+            //初始化数据
+            if (Hex2Xml.dicCellList.ContainsKey(cell.index))
+            {
+                XmlCellInfo info = Hex2Xml.dicCellList[cell.index];
+                cell.MapData = info.mapData;
+                cell.MapPlat = info.mapPlat;
+                elevation = info.elevation;
+            }
 
             if (x > 0)
             {
@@ -105,7 +116,7 @@ namespace CobraGame
             label.text = cell.coordinates.ToStringOnSeparateLines();
             cell.label = label;
 
-            cell.Elevation = 0;
+            cell.Elevation = elevation;
 
             AddCellToChunk(x, z, cell);
         }
@@ -142,6 +153,11 @@ namespace CobraGame
                 return null;
             }
             return cells[x + z * cellCountX];
+        }
+
+        public HexCell[] GetCells()
+        {
+            return cells;
         }
 
         public void ShowUI(bool visible)
