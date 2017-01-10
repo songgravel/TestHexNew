@@ -66,6 +66,11 @@ namespace CobraGame
         /*
         void EditCells(HexCell center)
         {
+            if (center == null)
+            {
+                return;
+            }
+
             int centerX = center.coordinates.X;
             int centerZ = center.coordinates.Z;
 
@@ -103,6 +108,11 @@ namespace CobraGame
 
         void SelectCells(HexCell center)
         {
+            if (center == null)
+            {
+                return;
+            }
+
             int centerX = center.coordinates.X;
             int centerZ = center.coordinates.Z;
 
