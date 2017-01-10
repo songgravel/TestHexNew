@@ -38,9 +38,9 @@ namespace CobraGame
     {
         private const float SQRT32 = 0.86602540378443864676372317075294f;   //sqrt(3)/2
 
-        public const float outerRadius = 10f;
+        public static float outerRadius = 10f;
 
-        public const float innerRadius = outerRadius * SQRT32;
+        public static float innerRadius = outerRadius * SQRT32;
 
         public const float solidFactor = 0.9f;
 

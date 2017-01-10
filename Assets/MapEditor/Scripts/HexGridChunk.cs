@@ -23,11 +23,6 @@ namespace CobraGame
             ShowPlat(false);
         }
 
-        //void Start()
-        //{
-        //    hexMesh.Triangulate(cells);
-        //}
-
         public void AddCell(int index, HexCell cell)
         {
             cells[index] = cell;
@@ -38,7 +33,6 @@ namespace CobraGame
 
         public void Refresh()
         {
-            //hexMesh.Triangulate(cells);
             enabled = true;
         }
 
@@ -61,7 +55,7 @@ namespace CobraGame
                 {
                     if (visible)
                     {
-                        cell.label.text = cell.MapPlat > 0 ? cell.MapPlat.ToString() : "";
+                        cell.label.text = cell.MapDataToString();
                     }
                     else
                     {

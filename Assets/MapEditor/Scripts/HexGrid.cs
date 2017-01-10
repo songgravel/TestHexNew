@@ -18,29 +18,23 @@ namespace CobraGame
         public HexCell cellPrefab;
         public Text cellLabelPrefab;
 
-        //Canvas gridCanvas;
-        //HexMesh hexMesh;
-
         HexGridChunk[] chunks;
         HexCell[] cells;
 
 
         void Awake()
         {
-            //gridCanvas = GetComponentInChildren<Canvas>();
-            //hexMesh = GetComponentInChildren<HexMesh>();
+            LoadData();
+        }
 
+        void LoadData()
+        {
             cellCountX = chunkCountX * HexMetrics.chunkSizeX;
             cellCountZ = chunkCountZ * HexMetrics.chunkSizeZ;
 
             CreateChunks();
             CreateCells();
         }
-
-        //void Start()
-        //{
-        //    hexMesh.Triangulate(cells);
-        //}
 
         void CreateChunks()
         {
@@ -77,7 +71,6 @@ namespace CobraGame
             position.z = z * (HexMetrics.outerRadius * 1.5f);
 
             HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
-            //cell.transform.SetParent(transform, false);
             cell.transform.localPosition = position;
             cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
             cell.Color = defaultColor;
@@ -108,7 +101,6 @@ namespace CobraGame
             }
 
             Text label = Instantiate<Text>(cellLabelPrefab);
-            //label.rectTransform.SetParent(gridCanvas.transform, false);
             label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
             label.text = cell.coordinates.ToStringOnSeparateLines();
             cell.label = label;
@@ -129,16 +121,6 @@ namespace CobraGame
             chunk.AddCell(localX + localZ * HexMetrics.chunkSizeX, cell);
         }
 
-        //public void ColorCell(Vector3 position, Color color)
-        //{
-        //    position = transform.InverseTransformPoint(position);
-        //    HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-        //    int index = coordinates.X + coordinates.Z * cellCountX + coordinates.Z / 2;
-        //    HexCell cell = cells[index];
-        //    cell.color = color;
-        //    hexMesh.Triangulate(cells);
-        //}
-
         public HexCell GetCell(Vector3 position)
         {
             position = transform.InverseTransformPoint(position);
@@ -146,11 +128,6 @@ namespace CobraGame
             int index = coordinates.X + coordinates.Z * cellCountX + coordinates.Z / 2;
             return cells[index];
         }
-
-        //public void Refresh()
-        //{
-        //    hexMesh.Triangulate(cells);
-        //}
 
         public HexCell GetCell(HexCoordinates coordinates)
         {

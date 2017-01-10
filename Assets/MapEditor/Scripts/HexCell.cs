@@ -71,11 +71,11 @@ namespace CobraGame
                 {
                     if ((mapData & (int)HexMapData.ENTRY) > 0)
                     {
-                        newColor.r += 0.5f;
+                        newColor.r += 1f;
                     }
                     if ((mapData & (int)HexMapData.BASE) > 0)
                     {
-                        newColor.b += 0.5f;
+                        newColor.b += 1f;
                     }
                     if ((mapData & (int)HexMapData.JOINT) > 0)
                     {
@@ -154,17 +154,20 @@ namespace CobraGame
             {
                 if (selected != value)
                 {
-                    if (selected)
-                    {
-                        Color = originColor;
-                    }
-                    else
+                    if (value)
                     {
                         originColor = Color;
                         Color = Color.green;
+                        label.color = Color.green;
+                    }
+                    else
+                    {
+                        Color = originColor;
+                        label.color = Color.black;
                     }
                 }
                 selected = value;
+
             }
         }
 
@@ -182,6 +185,33 @@ namespace CobraGame
                     }
                 }
             }
+        }
+
+        public string MapDataToString()
+        {
+            string text = MapPlat > 0 ? MapPlat.ToString() : "";
+            text += "\n";
+            if ((MapData & (int)HexMapData.ENTRY) > 0)
+            {
+                text += "起 ";
+            }
+            if ((MapData & (int)HexMapData.BASE) > 0)
+            {
+                text += "终 ";
+            }
+            if ((MapData & (int)HexMapData.JOINT) > 0)
+            {
+                text += "口 ";
+            }
+            if ((MapData & (int)HexMapData.BUILD) > 0)
+            {
+                text += "建 ";
+            }
+            if ((MapData & (int)HexMapData.PATH) > 0)
+            {
+                text += "路 ";
+            }
+            return text;
         }
     }
 }

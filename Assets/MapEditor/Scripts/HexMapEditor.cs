@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEditor;
 
 namespace CobraGame
 {
@@ -19,6 +20,7 @@ namespace CobraGame
         int activePlat;
         float activeElevation;
         int brushSize;
+        string fileName;
 
         bool applyData = false;
         bool applyPlat = false;
@@ -244,6 +246,10 @@ namespace CobraGame
                 foreach (KeyValuePair<int, HexCell> kvp in selectedList)
                 {
                     kvp.Value.MapData = activeData;
+                    if (showPlat)
+                    {
+                        kvp.Value.label.text = kvp.Value.MapDataToString();
+                    }
                 }
             }
         }
@@ -298,7 +304,7 @@ namespace CobraGame
                     kvp.Value.MapPlat = activePlat;
                     if (showPlat)
                     {
-                        kvp.Value.label.text = activePlat.ToString();
+                        kvp.Value.label.text = kvp.Value.MapDataToString();
                     }
                 }
             }
@@ -313,6 +319,27 @@ namespace CobraGame
         {
             hexGrid.ShowPlat(visible);
             showPlat = visible;
+        }
+
+        public void SetFileName(string value)
+        {
+            fileName = value;
+        }
+
+        public void LoadFile()
+        {
+            if (EditorUtility.DisplayDialog("提示", "是否确认重新加载地图 " + fileName + "？未保存数据将会丢失！", "确认", "取消"))
+            {
+                Hex2Xml.Load(fileName, hexGrid);
+            }
+        }
+
+        public void SaveFile()
+        {
+            if (EditorUtility.DisplayDialog("提示", "是否确认保存覆盖地图 " + fileName + "？", "确认", "取消"))
+            {
+                Hex2Xml.Save(fileName, hexGrid);
+            }
         }
     }
 }
