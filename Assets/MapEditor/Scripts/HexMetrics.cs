@@ -25,6 +25,15 @@ namespace CobraGame
         }
     }
 
+    public enum HexMapData
+    {
+        ENTRY = 1,
+        BASE = 2,
+        JOINT = 4,
+        BUILD = 8,
+        PATH = 16
+    }
+
     public static class HexMetrics
     {
         private const float SQRT32 = 0.86602540378443864676372317075294f;   //sqrt(3)/2

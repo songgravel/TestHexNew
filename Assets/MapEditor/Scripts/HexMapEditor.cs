@@ -12,21 +12,30 @@ namespace CobraGame
 
         public HexGrid hexGrid;
 
-        public Text textHeight;
+        public Slider elevationSlider;
+        public InputField elevationInput;
 
-        private Color activeColor;
+        int activeData;
+        int activePlat;
         float activeElevation;
         int brushSize;
 
-        bool applyColor;
+        bool applyData = false;
+        bool applyPlat = false;
         bool applyElevation = false;
         bool applySelect = true;
+        bool showPlat = false;
+        bool dataEntry = false;
+        bool dataBase = false;
+        bool dataJoint = false;
+        bool dataBuild = false;
+        bool dataPath = false;
 
         Dictionary<int, HexCell> selectedList = new Dictionary<int, HexCell>();
 
         void Awake()
         {
-            SelectColor(0);
+            //SelectColor(0);
         }
 
         // Update is called once per frame
@@ -52,6 +61,7 @@ namespace CobraGame
             }
         }
 
+        /*
         void EditCells(HexCell center)
         {
             int centerX = center.coordinates.X;
@@ -87,6 +97,7 @@ namespace CobraGame
                 }
             }
         }
+        */
 
         void SelectCells(HexCell center)
         {
@@ -132,6 +143,16 @@ namespace CobraGame
             }
         }
 
+        public void SetBrushSize(float size)
+        {
+            brushSize = (int)size;
+        }
+
+        public void SetApplySelect(bool toggle)
+        {
+            applySelect = toggle;
+        }
+
         public void ClearSelected()
         {
             foreach(KeyValuePair<int, HexCell> kvp in selectedList)
@@ -141,6 +162,7 @@ namespace CobraGame
             selectedList.Clear();
         }
 
+        /*
         public void SelectColor(int index)
         {
             applyColor = index >= 0;
@@ -149,6 +171,7 @@ namespace CobraGame
                 activeColor = colors[index];
             }
         }
+        */
 
         public void SetApplyElevation(bool toggle)
         {
@@ -158,9 +181,9 @@ namespace CobraGame
         public void SetElevation(float elevation)
         {
             activeElevation = elevation;
-            if (textHeight)
+            if (elevationInput)
             {
-                textHeight.text = elevation.ToString();
+                elevationInput.text = activeElevation.ToString();
             }
             if (applyElevation)
             {
@@ -171,19 +194,125 @@ namespace CobraGame
             }
         }
 
+        public void SetElevation(string elevation)
+        {
+            activeElevation = float.Parse(elevation);
+            if (elevationSlider)
+            {
+                elevationSlider.value = activeElevation;
+            }
+            if (applyElevation)
+            {
+                foreach (KeyValuePair<int, HexCell> kvp in selectedList)
+                {
+                    kvp.Value.Elevation = activeElevation;
+                }
+            }
+        }
+        
+        public void SetApplyData(bool toggle)
+        {
+            applyData = toggle;
+        }
+
+        public void SetMapData()
+        {
+            activeData = 0;
+            if (dataEntry)
+            {
+                activeData |= (int)HexMapData.ENTRY;
+            }
+            if (dataBase)
+            {
+                activeData |= (int)HexMapData.BASE;
+            }
+            if (dataJoint)
+            {
+                activeData |= (int)HexMapData.JOINT;
+            }
+            if (dataBuild)
+            {
+                activeData |= (int)HexMapData.BUILD;
+            }
+            if (dataPath)
+            {
+                activeData |= (int)HexMapData.PATH;
+            }
+
+            if (applyData)
+            {
+                foreach (KeyValuePair<int, HexCell> kvp in selectedList)
+                {
+                    kvp.Value.MapData = activeData;
+                }
+            }
+        }
+
+        public void SetDataEntry(bool toggle)
+        {
+            //入口单元
+            dataEntry = toggle;
+            SetMapData();
+        }
+
+        public void SetDataBase(bool toggle)
+        {
+            //主基地单元
+            dataBase = toggle;
+            SetMapData();
+        }
+
+        public void SetDataJoint(bool toggle)
+        {
+            //平台连接单元
+            dataJoint = toggle;
+            SetMapData();
+        }
+
+        public void SetDataBuild(bool toggle)
+        {
+            //可建筑单元
+            dataBuild = toggle;
+            SetMapData();
+        }
+
+        public void SetDataPath(bool toggle)
+        {
+            //可行走单元
+            dataPath = toggle;
+            SetMapData();
+        }
+
+        public void SetApplyPlat(bool toggle)
+        {
+            applyPlat = toggle;
+        }
+
+        public void SetMapPlat(string plat)
+        {
+            activePlat = int.Parse(plat);
+            if (applyPlat)
+            {
+                foreach (KeyValuePair<int, HexCell> kvp in selectedList)
+                {
+                    kvp.Value.MapPlat = activePlat;
+                    if (showPlat)
+                    {
+                        kvp.Value.label.text = activePlat.ToString();
+                    }
+                }
+            }
+        }
+
         public void ShowUI(bool visible)
         {
             hexGrid.ShowUI(visible);
         }
 
-        public void SetBrushSize(float size)
+        public void ShowPlat(bool visible)
         {
-            brushSize = (int)size;
-        }
-
-        public void SetApplySelect(bool toggle)
-        {
-            applySelect = toggle;
+            hexGrid.ShowPlat(visible);
+            showPlat = visible;
         }
     }
 }

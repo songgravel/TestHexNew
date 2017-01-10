@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CobraGame
 {
@@ -9,9 +10,11 @@ namespace CobraGame
         public int index;
         public HexCoordinates coordinates;
         Color color, originColor;
+        int mapData = 0;
+        int mapPlat = 0;
         float elevation = float.MinValue;
         bool selected;
-        public RectTransform uiRect;
+        public Text label;
         public HexGridChunk chunk;
 
         [SerializeField]
@@ -45,6 +48,76 @@ namespace CobraGame
             }
         }
 
+        public int MapData
+        {
+            get
+            {
+                return mapData;
+            }
+            set
+            {
+                if (mapData == value)
+                {
+                    return;
+                }
+                mapData = value;
+
+                Color newColor = Color.black;
+                if (mapData == 0)
+                {
+                    newColor = Color.black;
+                }
+                else
+                {
+                    if ((mapData & (int)HexMapData.ENTRY) > 0)
+                    {
+                        newColor.r += 0.5f;
+                    }
+                    if ((mapData & (int)HexMapData.BASE) > 0)
+                    {
+                        newColor.b += 0.5f;
+                    }
+                    if ((mapData & (int)HexMapData.JOINT) > 0)
+                    {
+                        newColor.g += 0.5f;
+                    }
+                    if ((mapData & (int)HexMapData.BUILD) > 0)
+                    {
+                        newColor.b += 0.5f;
+                    }
+                    if ((mapData & (int)HexMapData.PATH) > 0)
+                    {
+                        newColor.r += 0.5f;
+                    }
+                }
+                if (Selected)
+                {
+                    originColor = newColor;
+                    Color = newColor;
+                }
+                else
+                {
+                    Color = newColor;
+                }
+            }
+        }
+
+        public int MapPlat
+        {
+            get
+            {
+                return mapPlat;
+            }
+            set
+            {
+                if (mapPlat == value)
+                {
+                    return;
+                }
+                mapPlat = value;
+            }
+        }
+
         public float Elevation
         {
             get
@@ -63,9 +136,9 @@ namespace CobraGame
                 position.y = value * HexMetrics.elevationStep;
                 transform.localPosition = position;
 
-                Vector3 uiPosition = uiRect.localPosition;
+                Vector3 uiPosition = label.rectTransform.localPosition;
                 uiPosition.z = elevation * -HexMetrics.elevationStep - 0.15f;
-                uiRect.localPosition = uiPosition;
+                label.rectTransform.localPosition = uiPosition;
 
                 Refresh();
             }

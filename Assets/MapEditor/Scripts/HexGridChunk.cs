@@ -20,6 +20,7 @@ namespace CobraGame
             cells = new HexCell[HexMetrics.chunkSizeX * HexMetrics.chunkSizeZ];
 
             ShowUI(true);
+            ShowPlat(false);
         }
 
         //void Start()
@@ -32,7 +33,7 @@ namespace CobraGame
             cells[index] = cell;
             cell.chunk = this;
             cell.transform.SetParent(transform, false);
-            cell.uiRect.SetParent(gridCanvas.transform, false);
+            cell.label.rectTransform.SetParent(gridCanvas.transform, false);
         }
 
         public void Refresh()
@@ -50,6 +51,24 @@ namespace CobraGame
         public void ShowUI(bool visible)
         {
             gridCanvas.gameObject.SetActive(visible);
+        }
+
+        public void ShowPlat(bool visible)
+        {
+            foreach(HexCell cell in cells)
+            {
+                if (cell && cell.label)
+                {
+                    if (visible)
+                    {
+                        cell.label.text = cell.MapPlat > 0 ? cell.MapPlat.ToString() : "";
+                    }
+                    else
+                    {
+                        cell.label.text = cell.coordinates.ToStringOnSeparateLines();
+                    }
+                }
+            }
         }
     }
 }

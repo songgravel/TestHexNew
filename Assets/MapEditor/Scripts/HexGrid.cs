@@ -11,7 +11,7 @@ namespace CobraGame
         int cellCountX, cellCountZ;
         public int chunkCountX = 4, chunkCountZ = 3;
 
-        public Color defaultColor = Color.white;
+        public Color defaultColor = Color.black;
         public Color touchedColor = Color.magenta;
 
         public HexGridChunk chunkPrefab;
@@ -111,7 +111,7 @@ namespace CobraGame
             //label.rectTransform.SetParent(gridCanvas.transform, false);
             label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
             label.text = cell.coordinates.ToStringOnSeparateLines();
-            cell.uiRect = label.rectTransform;
+            cell.label = label;
 
             cell.Elevation = 0;
 
@@ -152,14 +152,6 @@ namespace CobraGame
         //    hexMesh.Triangulate(cells);
         //}
 
-        public void ShowUI(bool visible)
-        {
-            for (int i = 0; i < chunks.Length; i++)
-            {
-                chunks[i].ShowUI(visible);
-            }
-        }
-
         public HexCell GetCell(HexCoordinates coordinates)
         {
             int z = coordinates.Z;
@@ -173,6 +165,22 @@ namespace CobraGame
                 return null;
             }
             return cells[x + z * cellCountX];
+        }
+
+        public void ShowUI(bool visible)
+        {
+            for (int i = 0; i < chunks.Length; i++)
+            {
+                chunks[i].ShowUI(visible);
+            }
+        }
+
+        public void ShowPlat(bool visible)
+        {
+            for (int i = 0; i < chunks.Length; i++)
+            {
+                chunks[i].ShowPlat(visible);
+            }
         }
     }
 }
