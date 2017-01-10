@@ -1,0 +1,35 @@
+<DataList>
+  <MapInfo radius="4" chunk_size_x="5" chunk_size_z="5" chunk_count_x="6" chunk_count_z="6" />
+  <CellInfo index="283" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="284" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="285" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="286" map_data="0" map_plat="0" elevation="26" />
+  <CellInfo index="312" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="313" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="314" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="315" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="316" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="340" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="341" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="342" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="343" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="344" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="345" map_data="0" map_plat="0" elevation="26" />
+  <CellInfo index="371" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="372" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="373" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="374" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="375" map_data="0" map_plat="0" elevation="26" />
+  <CellInfo index="402" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="403" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="433" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="434" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="435" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="462" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="463" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="464" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="465" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="493" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="494" map_data="16" map_plat="0" elevation="34" />
+  <CellInfo index="495" map_data="16" map_plat="0" elevation="34" />
+</DataList>
