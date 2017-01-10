@@ -61,6 +61,8 @@ namespace CobraGame
                 elmNew.SetAttribute("chunk_size_z", HexMetrics.chunkSizeZ.ToString());
                 elmNew.SetAttribute("chunk_count_x", hexGrid.chunkCountX.ToString());
                 elmNew.SetAttribute("chunk_count_z", hexGrid.chunkCountZ.ToString());
+                elmNew.SetAttribute("grid_x", hexGrid.transform.localPosition.x.ToString());
+                elmNew.SetAttribute("grid_z", hexGrid.transform.localPosition.z.ToString());
                 root.AppendChild(elmNew);
 
                 foreach (HexCell cell in hexGrid.GetCells())
@@ -108,8 +110,20 @@ namespace CobraGame
                     HexMetrics.outerRadius = float.Parse(node.Attributes["radius"].Value);
                     HexMetrics.chunkSizeX = int.Parse(node.Attributes["chunk_size_x"].Value);
                     HexMetrics.chunkSizeZ = int.Parse(node.Attributes["chunk_size_z"].Value);
+                    HexMetrics.UpdateRadius();
                     hexGrid.chunkCountX = int.Parse(node.Attributes["chunk_count_x"].Value);
                     hexGrid.chunkCountZ = int.Parse(node.Attributes["chunk_count_z"].Value);
+                    float gridX = 0;
+                    if (node.Attributes["grid_x"] != null)
+                    {
+                        gridX = float.Parse(node.Attributes["grid_x"].Value);
+                    }
+                    float gridZ = 0;
+                    if (node.Attributes["grid_z"] != null)
+                    {
+                        gridZ = float.Parse(node.Attributes["grid_z"].Value);
+                    }
+                    hexGrid.transform.localPosition = new Vector3(gridX, 0, gridZ);
                     hexGrid.outerRadius = HexMetrics.outerRadius;
                     hexGrid.chunkSizeX = HexMetrics.chunkSizeX;
                     hexGrid.chunkSizeZ = HexMetrics.chunkSizeZ;
@@ -132,9 +146,11 @@ namespace CobraGame
             }
             else
             {
+                hexGrid.transform.localPosition = Vector3.zero;
                 HexMetrics.outerRadius = hexGrid.outerRadius;
                 HexMetrics.chunkSizeX = hexGrid.chunkSizeX;
                 HexMetrics.chunkSizeZ = hexGrid.chunkSizeZ;
+                HexMetrics.UpdateRadius();
 
                 Debug.Log("createMap OK!");
             }

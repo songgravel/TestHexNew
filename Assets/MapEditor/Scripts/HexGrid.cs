@@ -48,6 +48,7 @@ namespace CobraGame
                 {
                     HexGridChunk chunk = chunks[i++] = Instantiate(chunkPrefab);
                     chunk.transform.SetParent(transform);
+                    chunk.transform.localPosition = Vector3.zero;
                 }
             }
         }
@@ -114,6 +115,9 @@ namespace CobraGame
             Text label = Instantiate<Text>(cellLabelPrefab);
             label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
             label.text = cell.coordinates.ToStringOnSeparateLines();
+            int fontSize = (int)(HexMetrics.outerRadius * 4 / 10);
+            fontSize = Mathf.Clamp(fontSize, 1, 10);
+            label.fontSize = fontSize;
             cell.label = label;
 
             cell.Elevation = elevation;

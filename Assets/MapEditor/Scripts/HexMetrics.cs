@@ -60,6 +60,18 @@ namespace CobraGame
             new Vector3(0f, 0f, outerRadius)
         };
 
+        public static void UpdateRadius()
+        {
+            innerRadius = outerRadius * SQRT32;
+            corners[0] = new Vector3(0f, 0f, outerRadius);
+            corners[1] = new Vector3(innerRadius, 0f, 0.5f * outerRadius);
+            corners[2] = new Vector3(innerRadius, 0f, -0.5f * outerRadius);
+            corners[3] = new Vector3(0f, 0f, -outerRadius);
+            corners[4] = new Vector3(-innerRadius, 0f, -0.5f * outerRadius);
+            corners[5] = new Vector3(-innerRadius, 0f, 0.5f * outerRadius);
+            corners[6] = new Vector3(0f, 0f, outerRadius);
+        }
+
         public static Vector3 GetFirstCorner(HexDirection direction)
         {
             return corners[(int)direction];

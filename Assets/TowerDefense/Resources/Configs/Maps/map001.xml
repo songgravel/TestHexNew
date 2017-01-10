@@ -1,5 +1,5 @@
 <DataList>
-  <MapInfo radius="10" chunk_size_x="5" chunk_size_z="5" chunk_count_x="4" chunk_count_z="3" />
+  <MapInfo radius="10" chunk_size_x="5" chunk_size_z="5" chunk_count_x="4" chunk_count_z="3" grid_x="-500" grid_z="-50" />
   <CellInfo index="86" map_data="16" map_plat="1" elevation="13" />
   <CellInfo index="87" map_data="16" map_plat="1" elevation="13" />
   <CellInfo index="105" map_data="16" map_plat="1" elevation="13" />

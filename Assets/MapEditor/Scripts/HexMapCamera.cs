@@ -79,12 +79,14 @@ namespace CobraGame
             float xMax =
                 (grid.chunkCountX * HexMetrics.chunkSizeX - 0.5f) *
                 (2f * HexMetrics.innerRadius);
-            position.x = Mathf.Clamp(position.x, 0f, xMax);
+            float posX = grid.transform.localPosition.x;
+            position.x = Mathf.Clamp(position.x, posX, xMax + posX);
 
             float zMax =
                 (grid.chunkCountZ * HexMetrics.chunkSizeZ - 1) *
                 (1.5f * HexMetrics.outerRadius);
-            position.z = Mathf.Clamp(position.z, 0f, zMax);
+            float posZ = grid.transform.localPosition.z;
+            position.z = Mathf.Clamp(position.z, posZ, zMax + posZ);
 
             return position;
         }
