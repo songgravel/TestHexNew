@@ -21,7 +21,12 @@ public class HexMapLoader
             strFileName = strFileName.Substring(0, strFileName.Length - 4);//Resources加载不能带后缀名
         }
 
-        HexGrid hexGrid = GameObject.Find("Hex Grid").GetComponent<HexGrid>();
+        GameObject grid = GameObject.Find("Hex Grid");
+        if (grid == null)
+        {
+            return false;
+        }
+        HexGrid hexGrid = grid.GetComponent<HexGrid>();
 
         //string filepath = DDefine.GetDataPath() + @"/TowerDefense/Resources/Configs/Maps/" + strFileName;
         string filepath = string.Format(@"Configs/Maps/{0}", strFileName);
@@ -74,6 +79,7 @@ public class HexMapLoader
         }
         else
         {
+            HexGrid.s_dicCellList.Clear();
             hexGrid.transform.localPosition = Vector3.zero;
             HexMetrics.outerRadius = hexGrid.outerRadius;
             HexMetrics.chunkSizeX = hexGrid.chunkSizeX;
@@ -83,6 +89,12 @@ public class HexMapLoader
             Debug.Log("createMap OK!");
         }
 
+        //删除之前创建的子对象
+        for (int i = grid.transform.childCount - 1; i >= 0; i--)
+        {
+            GameObject go = grid.transform.GetChild(i).gameObject;
+            Object.DestroyImmediate(go);
+        }
         hexGrid.LoadData();
 
         return true;

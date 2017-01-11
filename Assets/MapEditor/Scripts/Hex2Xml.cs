@@ -127,6 +127,7 @@ namespace CobraGame
             }
             else
             {
+                HexGrid.s_dicCellList.Clear();
                 hexGrid.transform.localPosition = Vector3.zero;
                 HexMetrics.outerRadius = hexGrid.outerRadius;
                 HexMetrics.chunkSizeX = hexGrid.chunkSizeX;
@@ -136,6 +137,13 @@ namespace CobraGame
                 Debug.Log("createMap OK!");
             }
 
+            //删除之前创建的子对象
+            GameObject grid = hexGrid.gameObject;
+            for (int i = grid.transform.childCount - 1; i >= 0; i--)
+            {
+                GameObject go = grid.transform.GetChild(i).gameObject;
+                Object.Destroy(go);
+            }
             hexGrid.LoadData();
 
             return true;
