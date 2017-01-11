@@ -5,13 +5,21 @@ using UnityEngine.UI;
 
 namespace CobraGame
 {
-    //[ExecuteInEditMode]
+    public struct XmlCellInfo
+    {
+        public int index;
+        public int mapData;
+        public int mapPlat;
+        public float elevation;
+    }
+
+    [ExecuteInEditMode]
     public class HexGrid : MonoBehaviour
     {
         int cellCountX, cellCountZ;
-        public float outerRadius = 10f;
+        public float outerRadius = 2f;
         public int chunkSizeX = 5, chunkSizeZ = 5;
-        public int chunkCountX = 4, chunkCountZ = 3;
+        public int chunkCountX = 6, chunkCountZ = 6;
 
         public Color defaultColor = Color.black;
         public Color touchedColor = Color.magenta;
@@ -22,7 +30,8 @@ namespace CobraGame
 
         HexGridChunk[] chunks;
         HexCell[] cells;
-
+        
+        public static Dictionary<int, XmlCellInfo> s_dicCellList = new Dictionary<int, XmlCellInfo>();
 
         void Awake()
         {
@@ -80,9 +89,9 @@ namespace CobraGame
             cell.index = i;
             float elevation = 0;
             //初始化数据
-            if (Hex2Xml.dicCellList.ContainsKey(cell.index))
+            if (s_dicCellList.ContainsKey(cell.index))
             {
-                XmlCellInfo info = Hex2Xml.dicCellList[cell.index];
+                XmlCellInfo info = s_dicCellList[cell.index];
                 cell.MapData = info.mapData;
                 cell.MapPlat = info.mapPlat;
                 elevation = info.elevation;

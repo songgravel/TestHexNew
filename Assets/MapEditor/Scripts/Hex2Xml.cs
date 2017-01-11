@@ -1,30 +1,11 @@
-﻿using UnityEditor;
-using UnityEngine;
-using System.Collections;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using UnityEngine;
 using System.IO;
-//using System.Data;
 using System.Xml;
-//using LitJson;
 
 namespace CobraGame
 {
-    public struct XmlCellInfo
-    {
-        public int index;
-        public int mapData;
-        public int mapPlat;
-        public float elevation;
-    }
-
     public class Hex2Xml
     {
-        public static Dictionary<int, XmlCellInfo> dicCellList = new Dictionary<int, XmlCellInfo>();
-
         public static bool Save(string strFileName, HexGrid hexGrid)
         {
             if (strFileName.IndexOf(".xml") < 0)
@@ -129,7 +110,7 @@ namespace CobraGame
                     hexGrid.chunkSizeZ = HexMetrics.chunkSizeZ;
                 }
 
-                dicCellList.Clear();
+                HexGrid.s_dicCellList.Clear();
                 list = xdoc.SelectNodes(@"DataList/CellInfo");
                 foreach (XmlNode node in list)
                 {
@@ -139,7 +120,7 @@ namespace CobraGame
                     cell.mapPlat = int.Parse(node.Attributes["map_plat"].Value);
                     cell.elevation = float.Parse(node.Attributes["elevation"].Value);
 
-                    dicCellList.Add(cell.index, cell);
+                    HexGrid.s_dicCellList.Add(cell.index, cell);
                 }
 
                 Debug.Log("loadMap OK!");

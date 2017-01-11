@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace CobraGame
 {
+    [ExecuteInEditMode]
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
     public class HexMesh : MonoBehaviour
     {

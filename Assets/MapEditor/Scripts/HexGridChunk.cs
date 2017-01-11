@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace CobraGame
 {
+    [ExecuteInEditMode]
     public class HexGridChunk : MonoBehaviour
     {
 
