@@ -27,6 +27,7 @@ namespace CobraGame
 
     public enum HexMapData
     {
+        NULL = 0,
         ENTRY = 1,
         BASE = 2,
         JOINT = 4,
